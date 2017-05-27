@@ -3,14 +3,13 @@ var WikipediaViewer, DataParser, DOMUpdater, s;
 
 WikipediaViewer = {
 	properties: {
-		api: {
-			// add parameters as needed
-			url:'https://en.wikipedia.org/w/api.php?',
-			list: 'search',
-			action: 'query', 
-			format: 'json',
-			srwhat: 'text',
-			srsearch: ''
+		api: { 
+		url:'https://en.wikipedia.org/w/api.php?',
+		list: 'search',
+		action: 'query', 
+		format: 'json',
+		srwhat: 'text',
+		srsearch: ''
 		},
 		searchQuery: '',
 		searchBox: $('#input_SearchBox'),
