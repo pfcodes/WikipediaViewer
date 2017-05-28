@@ -1,7 +1,7 @@
-
 var WikipediaViewer, DataParser, DOMUpdater, s;
 
 WikipediaViewer = {
+
 	properties: {
 		api: { 
 		url:'https://en.wikipedia.org/w/api.php?',
@@ -24,7 +24,7 @@ WikipediaViewer = {
 
 	refreshQueryParameters: function() {
 		s.searchQuery = s.api.url;
-		// dynamic update of search query url
+		// dynamically updates search query url
 		for (i = 1; i < Object.keys(s.api).length; i++) {
 			s.searchQuery += (Object.keys(s.api)[i] + '=' + s.api[Object.keys(s.api)[i]]);
 			if (i != Object.keys(s.api).length-1) s.searchQuery += '&';
@@ -49,29 +49,52 @@ WikipediaViewer = {
 		s.searchQuery += s.searchBox.val().replace(' ', '+');
 		$.getJSON(s.searchQuery, DataParser.interpret);
 		console.log(s.searchQuery);
+	},
+
+	addResultCard: function(article) {
+		var title, snippet, image, source;
+		title = article.title;
+		snippet = article.snippet;
+		DOMUpdater.newCard(title, snippet);
 	}
 };
 
 DataParser = {
 	interpret: function(data) {
-		var item;
-		item = data.query.search;
+		var item = data.query.search;
 		$('#searchResults').empty();
 		for (i = 0; i < item.length; i ++) {
-			current = item[i];
-			DOMUpdater.addElement('<b>' + current.title + '</b>');
-			DOMUpdater.addElement(current.snippet);
+			WikipediaViewer.addResultCard(item[i]);
 		}
 	}
 };
 
 DOMUpdater = {
-	addElement: function(data) {
-		$('<p>' + data + '</p>').appendTo('#searchResults');
+	// rename to add card to deck
+	addElementToResultSection: function(title, snippet) {
+		var html;
+		html = '<div class="card card-inverse bg-inverse">';
+		html += '<div class="card-block">';
+		html += '<h4 class="card-title">';
+		html += title;
+		html += '</h4>';
+		html += '<p class="card-text">';
+		html += snippet;
+		html += '</p>';
+		html += '</div>';
+		html += '</div>';
+		$(html).appendTo('#searchResults');
 	},
-};
 
+	newCard: function(title, snippet) {
+		// add list element
+		this.addElementToResultSection(title, snippet);
+		
+		// add CSS to classes
+	}
+};
 
 $(function() {
 	WikipediaViewer.init();
 });
+

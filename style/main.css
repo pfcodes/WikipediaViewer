@@ -8,11 +8,9 @@ body {
 	width: 100%;
 	height: 100%;
 	background: #343d46;
-	color: white;
 }
 
 #pageWrapper {
-	vertical-align: middle;
 }
 
 #input_SearchBox {
