@@ -46,6 +46,7 @@ WikipediaViewer = {
 
 	performQuery: function() {
 		WikipediaViewer.refreshQueryParameters();
+		$('.card-columns').fadeOut();
 		s.searchQuery += s.searchBox.val().replace(' ', '+');
 		$.getJSON(s.searchQuery, DataParser.interpret);
 		console.log(s.searchQuery);
@@ -66,6 +67,7 @@ DataParser = {
 		for (i = 0; i < item.length; i ++) {
 			WikipediaViewer.addResultCard(item[i]);
 		}
+		$('.card-columns').hide().fadeIn('slow').show();
 	}
 };
 
@@ -73,11 +75,11 @@ DOMUpdater = {
 	// rename to add card to deck
 	addElementToResultSection: function(title, snippet) {
 		var html;
-		html = '<div class="card card-inverse bg-inverse">';
+		html = '<div class="card">';
 		html += '<div class="card-block">';
-		html += '<h4 class="card-title">';
+		html += '<h6 class="card-title">';
 		html += title;
-		html += '</h4>';
+		html += '</h6>';
 		html += '<p class="card-text">';
 		html += snippet;
 		html += '</p>';

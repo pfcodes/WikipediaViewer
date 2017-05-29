@@ -7,17 +7,23 @@ html {
 body {
 	width: 100%;
 	height: 100%;
-	background: #343d46;
+	overflow-x: hidden;
 }
 
 #pageWrapper {
+	background: white;
+	height: 100%;
+
 }
 
 #input_SearchBox {
-	width: 200px;
-	padding: 10px;
-	border-radius: 10px;
-	background: #63717f;
-	color: white;
-	border: 0;
+	font-weight: 100;
+}
+
+.card-text {
+	font-size: 12px;
+}
+
+#middle {
+	margin-top: 25%;
 }
