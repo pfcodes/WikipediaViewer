@@ -3,19 +3,18 @@ var WikipediaViewer, DataParser, DOMUpdater, s;
 WikipediaViewer = {
 
 	properties: {
-		api: { 
-		url:'https://en.wikipedia.org/w/api.php?',
-		action: 'query', 
-		format: 'json',
-		prop: 'extracts',
-		generator: 'search',
-		exlimit: '10',
-		exsentences: '5',
-		exintro: '1',
-		explaintext: '1',
-		exsectionformat: 'plain',
-		gsrsearch: ''
-		},
+		api: 
+		{ url:'https://en.wikipedia.org/w/api.php?',
+		  action: 'query', 
+		  format: 'json',
+		  prop: 'extracts',
+		  generator: 'search',
+		  exlimit: '10',
+		  exsentences: '5',
+		  exintro: '1',
+		  explaintext: '1',
+		  exsectionformat: 'plain',
+		  gsrsearch: '' },
 		searchQuery: '',
 		searchBox: $('#input_SearchBox'),
 		searchButton: $('#input_SearchButton')
@@ -27,9 +26,11 @@ WikipediaViewer = {
 		this.bindEvents();
 	},
 
+	// dynamically update the search query url
 	refreshQueryParameters: function() {
+		// start with the base url
 		s.searchQuery = s.api.url;
-		// dynamically updates search query url
+		// ...then add parameters as needed
 		for (i = 1; i < Object.keys(s.api).length; i++) {
 			s.searchQuery += (Object.keys(s.api)[i] + '=' + s.api[Object.keys(s.api)[i]]);
 			if (i != Object.keys(s.api).length-1) s.searchQuery += '&';
@@ -40,19 +41,28 @@ WikipediaViewer = {
 		// search button
 		s.searchButton.on('click', this.performQuery);
 			
-		// search box key down events
+		// search box 
 		s.searchBox.on('keydown', function(k) {
 			switch (k.keyCode) {
 				// ENTER key
 				case 13: WikipediaViewer.performQuery(); break;
+				/* default: suggestion dropdown request here */
 			}
+		});
+
+		s.searchBox.on('keyup', function(k) {
+			// will check for empty search box
 		});
 	},
 
 	performQuery: function() {
+		// make sure our query is up to date
 		WikipediaViewer.refreshQueryParameters();
+		// hide old cards if applicable
 		$('.card-columns').fadeOut();
+		// replace empty space to url friendly '+'
 		s.searchQuery += s.searchBox.val().replace(' ', '+');
+		// pass JSON onto the DataParser for interpretation
 		$.getJSON(s.searchQuery, DataParser.interpret);
 		console.log(s.searchQuery);
 	},
@@ -65,6 +75,9 @@ WikipediaViewer = {
 
 DataParser = {
 	interpret: function(data) {
+		// interpretations to be performed here for dynamic
+		// material (images, quotes, special text, etc.)
+		// the code below will be reorganized after
 		var item = Object.values(data.query.pages);
 		DOMUpdater.clearDeck();
 		for (i = 0; i < item.length; i ++) {
@@ -94,7 +107,7 @@ DOMUpdater = {
 		});
 	},
 	
-	// make dynamic based on properties (images, quotes, etc.)
+	// basic, non-dynamic, card structure for now
 	addCardToDeck: function(article) {
 		var html;
 		html = '<a class="card-anchor" target="_blank" href="http://en.wikipedia.org/?curid=' + article.pageid + '">';

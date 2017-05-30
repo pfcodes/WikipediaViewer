@@ -1,38 +1,12 @@
+/* DOM elements */
+html { width: 100%; height: 100%; }
+body { width: 100%; height: 100%; padding: 10px; overflow-x: hidden; }
+h2 { font-weight: 200; }
+/* specific elements */
+#pageWrapper { background: white; height: 100%; }
+#input_SearchBox { font-weight: 100; }
+#middle { margin-top: 5%; }
+/* classes */
+.card-text { font-size: 12px; }
+.card-anchor { color: inherit; text-decoration: inherit; }
 
-html {
-	width: 100%;
-	height: 100%;
-}
-
-body {
-	width: 100%;
-	height: 100%;
-	padding: 10px;
-	overflow-x: hidden;
-}
-h2 {
-	font-weight: 200;
-}
-
-#pageWrapper {
-	background: white;
-	height: 100%;
-
-}
-
-#input_SearchBox {
-	font-weight: 100;
-}
-
-.card-text {
-	font-size: 12px;
-}
-
-.card-anchor {
-	color: inherit;
-	text-decoration: inherit;
-}
-
-#middle {
-	margin-top: 5%;
-}
