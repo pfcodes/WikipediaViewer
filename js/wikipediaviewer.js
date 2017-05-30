@@ -10,7 +10,10 @@ WikipediaViewer = {
 		prop: 'extracts',
 		generator: 'search',
 		exlimit: '10',
+		exsentences: '5',
 		exintro: '1',
+		explaintext: '1',
+		exsectionformat: 'plain',
 		gsrsearch: ''
 		},
 		searchQuery: '',
@@ -55,10 +58,8 @@ WikipediaViewer = {
 	},
 
 	addResultCard: function(article) {
-		var title, snippet, image, source;
-		title = article.title;
-		snippet = article.extract;
-		DOMUpdater.newCard(title, snippet);
+		DOMUpdater.updatePageLayout();
+		DOMUpdater.addCardToDeck(article);
 	}
 };
 
@@ -79,27 +80,38 @@ DOMUpdater = {
 		$('#searchResults').empty();
 	},
 
-	addCardToDeck: function(title, snippet) {
+	updatePageLayout: function() {
+		$('#header-row').hide('slow');
+	},
+
+	bindEventsToCard: function(id) {
+		$(id).on('mouseenter', function() {
+			$(id).addClass('card-inverse').addClass('card-info');
+		});
+
+		$(id).on('mouseleave', function() {
+			$(id).removeClass('card-inverse').removeClass('card-info');
+		});
+	},
+	
+	// make dynamic based on properties (images, quotes, etc.)
+	addCardToDeck: function(article) {
 		var html;
-		html = '<div class="card">';
+		html = '<a class="card-anchor" target="_blank" href="http://en.wikipedia.org/?curid=' + article.pageid + '">';
+		html += '<div class="card" id="' + article.pageid + '">';
 		html += '<div class="card-block">';
 		html += '<h6 class="card-title">';
-		html += title;
+		html += article.title;
 		html += '</h6>';
 		html += '<p class="card-text">';
-		html += snippet;
+		html += article.extract;
 		html += '</p>';
 		html += '</div>';
 		html += '</div>';
+		html += '</a>';
 		$(html).appendTo('#searchResults');
+		this.bindEventsToCard('#' + article.pageid);
 	},
-
-	newCard: function(title, snippet) {
-		// add list element
-		this.addCardToDeck(title, snippet);
-		
-		// add CSS to classes
-	}
 };
 
 $(function() {
