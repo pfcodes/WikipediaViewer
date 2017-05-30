@@ -5,11 +5,13 @@ WikipediaViewer = {
 	properties: {
 		api: { 
 		url:'https://en.wikipedia.org/w/api.php?',
-		list: 'search',
 		action: 'query', 
 		format: 'json',
-		srwhat: 'text',
-		srsearch: ''
+		prop: 'extracts',
+		generator: 'search',
+		exlimit: '10',
+		exintro: '1',
+		gsrsearch: ''
 		},
 		searchQuery: '',
 		searchBox: $('#input_SearchBox'),
@@ -55,15 +57,15 @@ WikipediaViewer = {
 	addResultCard: function(article) {
 		var title, snippet, image, source;
 		title = article.title;
-		snippet = article.snippet;
+		snippet = article.extract;
 		DOMUpdater.newCard(title, snippet);
 	}
 };
 
 DataParser = {
 	interpret: function(data) {
-		var item = data.query.search;
-		$('#searchResults').empty();
+		var item = Object.values(data.query.pages);
+		DOMUpdater.clearDeck();
 		for (i = 0; i < item.length; i ++) {
 			WikipediaViewer.addResultCard(item[i]);
 		}
@@ -72,8 +74,12 @@ DataParser = {
 };
 
 DOMUpdater = {
-	// rename to add card to deck
-	addElementToResultSection: function(title, snippet) {
+
+	clearDeck: function() {
+		$('#searchResults').empty();
+	},
+
+	addCardToDeck: function(title, snippet) {
 		var html;
 		html = '<div class="card">';
 		html += '<div class="card-block">';
@@ -90,7 +96,7 @@ DOMUpdater = {
 
 	newCard: function(title, snippet) {
 		// add list element
-		this.addElementToResultSection(title, snippet);
+		this.addCardToDeck(title, snippet);
 		
 		// add CSS to classes
 	}
