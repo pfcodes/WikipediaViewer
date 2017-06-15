@@ -72,7 +72,13 @@ WikipediaViewer = {
     // replaces empty space to url friendly '+'
     s.searchQuery += s.searchBox.val().replace(' ', '+')
     // pass JSON onto the DataParser for interpretation
-    $.getJSON(s.searchQuery, DataParser.interpret)
+    $.ajax({
+      url: s.searchQuery,
+      type: 'GET',
+      crossDomain: true,
+      dataType: 'jsonp',
+      success: DataParser.interpret
+    })
     console.log(s.searchQuery)
   },
 
